@@ -56,6 +56,10 @@ class TapStackOverflowSampleData(Tap):
         data_directory = self.config.get("stackoverflow_data_directory")
         stream_types: List[Stream] = []
 
+        if data_directory is None:
+            self.logger.error("No stackoverflow_data_directory configured.")
+            exit(1)
+        
         if os.path.exists(data_directory):
             if os.path.isdir(data_directory):
                 if len(os.listdir(data_directory)) > 0:
