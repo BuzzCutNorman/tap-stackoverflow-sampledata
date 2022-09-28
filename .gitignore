@@ -137,3 +137,7 @@ dmypy.json
 
 # Config for poetry run
 config.json
+meltano.yml
+mypy.ini 
+tox.ini
+ci_workflow.yml
