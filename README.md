@@ -91,7 +91,7 @@ You can use one, two, or all.
 
 ## Configuration
 
-The only configuration needed is to provide the path to the directory that you the extracted Stackoverflow file(s) in.
+The only configuration you need to provide is the path of the directory you placed the extracted Stackoverflow file(s) in.
 
 ## Settings
 
