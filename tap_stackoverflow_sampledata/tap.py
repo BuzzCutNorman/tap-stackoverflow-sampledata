@@ -1,0 +1,88 @@
+"""stackoverflow-sampledata tap class."""
+import os
+
+from typing import List
+
+from singer_sdk import Tap, Stream
+from singer_sdk import typing as th  # JSON schema typing helpers
+from singer_sdk.helpers._classproperty import classproperty
+
+# TODO: Import your custom stream types here:
+from tap_stackoverflow_sampledata.streams import (
+    StackOverflowSampleDataStream,
+    BadgesStream,
+    CommentsStream,
+    PostLinksStream,
+    PostsStream,
+    TagsStream,
+    UsersStream,
+    VotesStream,
+)
+
+#Used later to match Stream Class to files
+STACKOVERFLOW_FILE_NAMES_TO_STREAMS = {
+    "badges.xml": BadgesStream,
+    "comments.xml": CommentsStream,
+    "postlinks.xml": PostLinksStream,
+    "posts.xml": PostsStream,
+    "tags.xml": TagsStream,
+    "users.xml": UsersStream,
+    "votes.xml": VotesStream
+}
+
+STREAM_TYPES = List[Stream]
+
+class TapStackOverflowSampleData(Tap):
+    """stackoverflow-sampledata tap class."""
+    name = "tap-stackoverflow-sampledata"
+
+    config_jsonschema = th.PropertiesList(
+        th.Property(
+            "stackoverflow_data_directory",
+            th.StringType,
+            description="A path to the StackOverflow XML data files.",
+        ),
+    ).to_dict()
+
+    @classproperty
+    def capabilities(self) -> List[str]:
+        """Get tap capabilites."""
+        return ["catalog", "discover"]
+
+    def get_streams(self) -> List[Stream]:
+        """Return a list of file configs.
+        Directly from the config.json or in an external file
+        """
+        data_directory = self.config.get("stackoverflow_data_directory")
+        stream_types: List[Stream] = []
+
+        if os.path.exists(data_directory):
+            if os.path.isdir(data_directory):
+                if len(os.listdir(data_directory)) > 0:
+                    for file in os.listdir(data_directory):
+                        #If the file is in the dictionary we add it the Streams Classes that will be 
+                        #passed in the dicover_streams process.
+                        if STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower()):
+                            stream_types.append(STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower()))   
+                else:
+                    self.logger.error("There are no files in the directory")
+                    exit(1)
+            else:
+                self.logger.error("The path given is not a direcotry")
+                exit(1)
+        else:
+            self.logger.error("The path doesn't exist")
+            exit(1)
+        
+        if not stream_types:
+            self.logger.error("No Stackovlerflow files found.")
+            exit(1)
+  
+        return stream_types
+
+
+    def discover_streams(self) -> List[Stream]:
+        """Return a list of discovered streams.""" 
+        STREAM_TYPES = self.get_streams()
+
+        return [stream_class(self) for stream_class in STREAM_TYPES]
