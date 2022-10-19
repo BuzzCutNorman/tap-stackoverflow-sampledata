@@ -97,8 +97,10 @@ The only configuration you need to provide is the path of the directory you plac
 
 | Setting                     | Required | Default | Description |
 |:----------------------------|:--------:|:-------:|:------------|
-| stackoverflow_data_directory| False    | None    | A path to the StackOverflow XML data file(s). |
+| stackoverflow_data_directory| False    | None    | A path to the StackOverflow XML data files. |
+| batch_config                | False    | None    | Optional Batch Message configuration |
 
+### Base Settings
 Singer: config.json
 ```
 {
@@ -110,6 +112,37 @@ Meltano: meltano.yml
 ```
     config:
       stackoverflow_data_directory: C:\Development\StackOverflow\
+```
+
+### Batch Settings
+Singer: config.json
+```
+{
+	"stackoverflow_data_directory" : "C:\\Development\\StackOverflow\\".
+	"batch_config": {
+		"encoding": {
+		  "format": "jsonl",
+		  "compression": "gzip"
+		},
+		"storage": {
+		  "root": "file://c://development/batches",
+		  "prefix": "test-batch-"
+		}
+	}
+}
+```
+
+Meltano: meltano.yml
+```
+  config:
+    stackoverflow_data_directory: C:\Development\StackOverflow\
+    batch_config:
+      encoding:
+        format: jsonl
+        compression: gzip
+      storage:
+        root: "file://c://development/batches"
+        prefix: test-batch-
 ```
 
 ## Capabilities
