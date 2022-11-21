@@ -6,7 +6,12 @@ from typing import List
 from singer_sdk import Tap, Stream
 from singer_sdk import typing as th  # JSON schema typing helpers
 from singer_sdk.helpers._classproperty import classproperty
-
+from singer_sdk.helpers.capabilities import (
+    CapabilitiesEnum,
+    PluginCapabilities,
+    TapCapabilities,
+)
+from singer_sdk._singerlib import Catalog
 # TODO: Import your custom stream types here:
 from tap_stackoverflow_sampledata.streams import (
     StackOverflowSampleDataStream,
@@ -36,6 +41,17 @@ class TapStackOverflowSampleData(Tap):
     """stackoverflow-sampledata tap class."""
     name = "tap-stackoverflow-sampledata"
 
+    @property
+    def input_catalog(self) -> Catalog:
+        """Get the tap's working catalog.
+
+        Returns:
+            A Singer catalog object.
+        """
+        # This has been set to return None so auto-detection
+        # of streams based on files in the folder will work
+        return None
+    
     config_jsonschema = th.PropertiesList(
         th.Property(
             "stackoverflow_data_directory",
@@ -83,9 +99,16 @@ class TapStackOverflowSampleData(Tap):
     ).to_dict()
 
     @classproperty
-    def capabilities(self) -> List[str]:
-        """Get tap capabilites."""
-        return ["catalog", "discover"]
+    def capabilities(self) -> list[CapabilitiesEnum]:
+        """Get tap capabilities.
+
+        Returns:
+            A list of capabilities supported by this tap.
+        """
+        return [
+            TapCapabilities.DISCOVER,
+            PluginCapabilities.ABOUT,
+        ]
 
     def get_streams(self) -> List[Stream]:
         """Return a list of file configs.
