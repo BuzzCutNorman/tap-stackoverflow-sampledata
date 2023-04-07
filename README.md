@@ -4,6 +4,10 @@
 
 Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
 
+### Whats New 🛳️🎉
+
+**2023-04-10 Upgraded to Meltano Singer-SDK 0.22.1:** 
+
 ## Installation
 
 You will need to install the tap directly from the GitHub repository.  Here is the command to use
@@ -27,13 +31,13 @@ You will need to download the Stack Overflow files, uzip them, and place then in
 
 |File                                                                                 | Zipped Size | Unzipped Size | Rows     |
 |-------------------------------------------------------------------------------------|------------:|--------------:|---------:|
-[Badges](https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z)      | 324 MB      | 4.93 GB       | 44,913,194
-[Comments](https://archive.org/download/stackexchange/stackoverflow.com-Comments.7z)  | 5 GB        | 24.3 GB       | 85,467,182
-[PostLinks](https://archive.org/download/stackexchange/stackoverflow.com-PostLinks.7z)| 110 MB      | 961 MB        | 8,193,698
-[Posts](https://archive.org/download/stackexchange/stackoverflow.com-Posts.7z)        | 17.8 GB     | 89.9 GB       | 56,264,788
-[Tags](https://archive.org/download/stackexchange/stackoverflow.com-Tags.7z)          | 885.5 KB    | 5.36 MB       | 63,175
-[Users](https://archive.org/download/stackexchange/stackoverflow.com-Users.7z)        | 929.9 MB    | 5.76 GB       | 17,922,426
-[Votes](https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z)        | 1.4 GB      | 21.1 GB       | 231,441,846
+[Badges](https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z)      | 342 MB      | 5.28 GB       | 48,022,288
+[Comments](https://archive.org/download/stackexchange/stackoverflow.com-Comments.7z)  | 5.18 GB     | 25.2 GB       | 88,222,951
+[PostLinks](https://archive.org/download/stackexchange/stackoverflow.com-PostLinks.7z)| 116 MB      | 990 MB        | 8,666,593
+[Posts](https://archive.org/download/stackexchange/stackoverflow.com-Posts.7z)        | 18.5 GB     | 93.9 GB       | 58,329,356
+[Tags](https://archive.org/download/stackexchange/stackoverflow.com-Tags.7z)          | 902 KB      | 5.45 MB       | 64,465
+[Users](https://archive.org/download/stackexchange/stackoverflow.com-Users.7z)        | 683 MB      | 4.78 GB       | 19,942,787
+[Votes](https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z)        | 1.28 GB     | 20.6 GB       | 228,077,281
 
 You can use one, two, or all.  
 
@@ -101,7 +105,7 @@ Meltano: meltano.yml
 
 ## Capabilities
 
-* `catalog`
+* `about`
 * `discover`
 
 A full list of supported settings and capabilities is available by running: `tap-stackoverflow-sampledata --about`
