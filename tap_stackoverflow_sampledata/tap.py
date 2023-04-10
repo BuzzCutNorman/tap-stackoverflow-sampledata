@@ -24,7 +24,7 @@ from tap_stackoverflow_sampledata.streams import (
     VotesStream,
 )
 
-#Used later to match Stream Class to files
+# Used later to match Stream Class to files
 STACKOVERFLOW_FILE_NAMES_TO_STREAMS = {
     "badges.xml": BadgesStream,
     "comments.xml": CommentsStream,
@@ -36,6 +36,7 @@ STACKOVERFLOW_FILE_NAMES_TO_STREAMS = {
 }
 
 STREAM_TYPES = List[Stream]
+
 
 class TapStackOverflowSampleData(Tap):
     """stackoverflow-sampledata tap class."""
@@ -51,7 +52,7 @@ class TapStackOverflowSampleData(Tap):
         # This has been set to return None so auto-detection
         # of streams based on files in the folder will work
         return None
-    
+
     config_jsonschema = th.PropertiesList(
         th.Property(
             "stackoverflow_data_directory",
@@ -61,7 +62,7 @@ class TapStackOverflowSampleData(Tap):
         th.Property(
             "batch_config",
             th.ObjectType(
-                th.Property( 
+                th.Property(
                     "encoding",
                     th.ObjectType(
                         th.Property(
@@ -76,7 +77,7 @@ class TapStackOverflowSampleData(Tap):
                         )
                     )
                 ),
-                    th.Property(
+                th.Property(
                     "storage",
                     th.ObjectType(
                         th.Property(
@@ -120,15 +121,16 @@ class TapStackOverflowSampleData(Tap):
         if data_directory is None:
             self.logger.error("No stackoverflow_data_directory configured.")
             exit(1)
-        
+
         if os.path.exists(data_directory):
             if os.path.isdir(data_directory):
                 if len(os.listdir(data_directory)) > 0:
                     for file in os.listdir(data_directory):
-                        #If the file is in the dictionary we add it the Streams Classes that will be 
-                        #passed in the dicover_streams process.
+                        # If the file is in the dictionary
+                        # we add it the Streams Classes that will be
+                        # passed in the dicover_streams process.
                         if STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower()):
-                            stream_types.append(STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower()))   
+                            stream_types.append(STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower()))
                 else:
                     self.logger.error("There are no files in the directory")
                     exit(1)
@@ -138,16 +140,15 @@ class TapStackOverflowSampleData(Tap):
         else:
             self.logger.error("The path doesn't exist")
             exit(1)
-        
+
         if not stream_types:
             self.logger.error("No Stackovlerflow files found.")
             exit(1)
-  
+
         return stream_types
 
-
     def discover_streams(self) -> List[Stream]:
-        """Return a list of discovered streams.""" 
+        """Return a list of discovered streams."""
         STREAM_TYPES = self.get_streams()
 
         return [stream_class(self) for stream_class in STREAM_TYPES]
