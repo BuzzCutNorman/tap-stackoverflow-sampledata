@@ -6,7 +6,8 @@ Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
 
 ### Whats New 🛳️🎉
 
-**2023-04-10 Upgraded to Meltano Singer-SDK 0.22.1:** 
+
+**2023-06-05 Upgraded to Meltano Singer-SDK 0.27.0:** 
 
 ## Installation
 
