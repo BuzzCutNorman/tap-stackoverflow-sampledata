@@ -1,4 +1,7 @@
 """stackoverflow-sampledata tap class."""
+
+from __future__ import annotations
+
 import os
 
 from typing import List
@@ -14,7 +17,6 @@ from singer_sdk.helpers.capabilities import (
 from singer_sdk._singerlib import Catalog
 # TODO: Import your custom stream types here:
 from tap_stackoverflow_sampledata.streams import (
-    StackOverflowSampleDataStream,
     BadgesStream,
     CommentsStream,
     PostLinksStream,
@@ -40,6 +42,7 @@ STREAM_TYPES = List[Stream]
 
 class TapStackOverflowSampleData(Tap):
     """stackoverflow-sampledata tap class."""
+
     name = "tap-stackoverflow-sampledata"
 
     @property
@@ -152,3 +155,6 @@ class TapStackOverflowSampleData(Tap):
         STREAM_TYPES = self.get_streams()
 
         return [stream_class(self) for stream_class in STREAM_TYPES]
+
+if __name__ == "__main__":
+    TapStackOverflowSampleData.cli()
