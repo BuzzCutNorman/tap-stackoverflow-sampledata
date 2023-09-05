@@ -1,6 +1,8 @@
 """Custom client handling, including
 StackOverflowSampleDataStream base class."""
 
+from __future__ import annotations
+
 import os
 
 from typing import Optional, Iterable
@@ -11,19 +13,23 @@ from lxml import etree
 
 class StackOverflowSampleDataStream(Stream):
     """Stream class for stackoverflow-sampledata streams."""
-
-    file_path: str = None
+    
     file_name: str = None
 
-    def __init__(self, *args, **kwargs):
-        """Init StackOverflowSampleDataStream
+    _file_path: str = None
+    _file_directory: str = None
 
-            Args:
-                args: Class constructor positional arguments.
-                kwargs: Class constructor keyword arguments.
-        """
+    @property
+    def file_directory(self) -> str:
+        if self._file_directory is None:
+            self._file_directory = self.config.get("stackoverflow_data_directory")
+        return self._file_directory
 
-        super().__init__(*args, **kwargs)
+    @property
+    def data_file(self) -> str:
+        if self._file_path is None:
+            self.get_data_file_path()
+        return self._file_path
 
     def get_records(self, context: Optional[dict]) -> Iterable[dict]:
         """Return a generator of row-type dictionary objects.
@@ -35,17 +41,10 @@ class StackOverflowSampleDataStream(Stream):
         Yields:
             One dict per record.
         """
-        # Check if the file_path has been populated
-        # if it hasn't fill run get_file_path to populate it
-        if self.file_path:
-            data_file = self.file_path
-        else:
-            self.get_file_path()
-            data_file = self.file_path
 
         # Grab the rows from the xml file using by
         # opening the file using using a iternation parser
-        for event, element in etree.iterparse(data_file):
+        for event, element in etree.iterparse(self.data_file):
 
             # Dictionaries to place and raw refined rows
             xml_row = dict()
@@ -111,41 +110,23 @@ class StackOverflowSampleDataStream(Stream):
             if element.getparent() is not None:
                 element.getparent().remove(element)
 
-    def get_file_path(self):
+    def get_data_file_path(self):
         """Return a list of file paths to read.
         This tap accepts file names and directories so it will detect
         directories and iterate files inside.
         """
-        # Cache file paths so we dont have to iterate multiple times
-        if self.file_path and (os.path.basename(self.file_path) == self.file_name):
-            return self.file_path
 
-        # Check that the file_path from the meltano.yaml exists
+        # Check that the file_direcotry from the meltano.yaml exists
         # if it isn't we alert there is an issue
-        file_path = self.config.get("stackoverflow_data_directory")
-        if not os.path.exists(file_path):
-            raise Exception(f"File path does not exist {file_path}")
+        if not os.path.exists(self.file_directory):
+            raise Exception(f"File path does not exist {self.file_directory}")
 
-        # Check if the file_path is a directory or a file
         # Add the file Streams file_name to a direcotory path
         # Pass along file_path if it points to the Stream's file_name
-        full_file_path: str = None
-        if os.path.isdir(file_path):
-            clean_file_path = os.path.normpath(file_path) + os.sep
-            full_file_path = clean_file_path + self.file_name
-            if self.is_valid_filename(full_file_path):
-                self.file_path = full_file_path
-        else:
-            if self.is_valid_filename(file_path) and (os.path.basename(file_path) == self.file_name):
-                full_file_path = file_path
-                self.file_path = full_file_path
-
-        # If we don't end up with a full file path we raise a warning
-        if not full_file_path:
-            raise Exception(
-                f"Stream '{self.name}' has no acceptable files. \
-                    See warning for more detail."
-            )
+        clean_file_path = os.path.normpath(self.file_directory) + os.sep
+        data_file_path: str = clean_file_path + self.file_name
+        if self.is_valid_filename(data_file_path):
+            self._file_path = data_file_path
 
     def is_valid_filename(self, file_path: str) -> bool:
         """Return a boolean of whether the path is a file includes an XML extension."""
