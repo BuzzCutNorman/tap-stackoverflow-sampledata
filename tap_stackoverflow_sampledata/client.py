@@ -47,8 +47,8 @@ class StackOverflowSampleDataStream(Stream):
         for _, element in etree.iterparse(self.data_file):
 
             # Dictionaries to place and raw refined rows
-            xml_row = dict()
-            row = dict()
+            xml_row: dict = {}
+            row: dict = {}
 
             # The data is held a attributes to each sub root row
             # We grab each attibute item and type it according to the schmea
