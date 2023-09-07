@@ -44,6 +44,7 @@ class StackOverflowSampleDataStream(Stream):
 
         # Grab the rows from the xml file using by
         # opening the file using using a iternation parser
+        element: etree._Element
         for _, element in etree.iterparse(self.data_file):
 
             # Dictionaries to place and raw refined rows
