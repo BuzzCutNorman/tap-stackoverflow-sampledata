@@ -88,20 +88,20 @@ class StackOverflowSampleDataStream(Stream):
                     row[column] = None
 
             # We are under the assuption that
-            # primary key(s) have valus present
-            primary_key_not_null = True
+            # primary key(s) have values present
+            primary_keys_present = True
 
             # Check each primary key in the row to make
             # sure it has a value if one does not have value
             # set the primary key not null flag to False
             for key_col in self.primary_keys:
                 if row.get(key_col) is None:
-                    primary_key_not_null = False
+                    primary_keys_present = False
 
             # If the primary key not null flag is True
             # yeild the row as a dictrionary
-            if primary_key_not_null:
-                yield dict(row)
+            if primary_keys_present:
+                yield row
 
             # We clear the element so we don't use memory
             # to hold rows we won't need again
