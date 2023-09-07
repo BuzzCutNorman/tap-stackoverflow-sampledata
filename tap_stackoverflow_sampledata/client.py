@@ -53,11 +53,9 @@ class StackOverflowSampleDataStream(Stream):
 
             # The data is held a attributes to each sub root row
             # We grab each attibute item and type it according to the schmea
-            for attribute in element.attrib.items():
-                # Each attribut is a key and value pair "ID"=1
-                key: str = attribute[0]
-                value: str = attribute[1]
-
+            key: str
+            value: str
+            for key, value in element.attrib.items():
                 # We try to grab to schema type property for the attibute
                 # Then type the value. If a type can no be grabbed we
                 # pass the default string type.
