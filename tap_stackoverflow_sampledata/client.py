@@ -46,11 +46,18 @@ class StackOverflowSampleDataStream(Stream):
 
         # Blank list to hold al the Primary Key columns
         column_names: list = []
+        column_value_types: dict[str, list[str]] = {}
 
         #  We grab the column names from the Stream Schema
         #  Then append them to the columns names list
         for column in properties.keys():
             column_names.append(str(column))
+        
+        for key in column_names:
+            # Get the Item/Column property
+            property_schema: dict = properties.get(key)
+            property_schema_types: list = property_schema.get('type')
+            column_value_types[key] = property_schema_types
 
         # Grab the rows from the xml file using by
         # opening the file using using a iternation parser
@@ -66,17 +73,8 @@ class StackOverflowSampleDataStream(Stream):
             key: str
             value: str
             for key, value in element.attrib.items():
-                # We try to grab to schema type property for the attibute
-                # Then type the value. If a type can no be grabbed we
-                # pass the default string type.
-                try:
-                    value_type: str = self.schema['properties'][key]['type'][0]
-                except:
-                    value_type: str = 'string'
-
-                if value_type == 'integer':
+                if 'integer' in column_value_types.get(key):
                     value = int(value)
-
                 # We add the key value pair to the xml_row dictionary
                 xml_row[key] = value
 
