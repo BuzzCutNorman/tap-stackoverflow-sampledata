@@ -41,6 +41,16 @@ class StackOverflowSampleDataStream(Stream):
         Yields:
             One dict per record.
         """
+        # Get the Stream Properties Dictornary from the Schema
+        properties: dict = self.schema.get('properties')
+
+        # Blank list to hold al the Primary Key columns
+        column_names: list = []
+
+        #  We grab the column names from the Stream Schema
+        #  Then append them to the columns names list
+        for column in properties.keys():
+            column_names.append(str(column))
 
         # Grab the rows from the xml file using by
         # opening the file using using a iternation parser
@@ -69,14 +79,6 @@ class StackOverflowSampleDataStream(Stream):
 
                 # We add the key value pair to the xml_row dictionary
                 xml_row[key] = value
-
-            # Blank list to hold al the Primary Key columns
-            column_names = list()
-
-            #  We grab the column names from the Stream Schema
-            #  Then append them to the columns names list
-            for column in self.schema['properties'].keys():
-                column_names.append(str(column))
 
             # We use the columns list to add columns that didn't
             # have any data in the xml row and set the
