@@ -65,11 +65,18 @@ class StackOverflowSampleDataStream(Stream):
             # Dictionaries to place and raw refined rows
             row: dict = {}
 
-            # The data is held a attributes to each sub root row
+            # We are under the assuption that
+            # primary key(s) have values present
+            primary_keys_present: bool = True
+
+			# The data is held a attributes to each sub root row
             # We grab each attibute item and type it according to the schmea
             # We use the columns list to add columns that didn't
             # have any data in the xml row and set the
             # column value to none or null
+            # Check each primary key in the row to make
+            # sure it has a value if one does not have value
+            # set the primary key not null flag to False
             column: str
             for column in column_names:
                 if column in element.attrib.keys():
@@ -80,17 +87,8 @@ class StackOverflowSampleDataStream(Stream):
                         row[column] = value
                 else:
                     row[column] = None
-
-            # We are under the assuption that
-            # primary key(s) have values present
-            primary_keys_present = True
-
-            # Check each primary key in the row to make
-            # sure it has a value if one does not have value
-            # set the primary key not null flag to False
-            for key_col in self.primary_keys:
-                if row.get(key_col) is None:
-                    primary_keys_present = False
+                    if column in self.primary_keys:
+                        primary_keys_present = False
 
             # If the primary key not null flag is True
             # yeild the row as a dictrionary
