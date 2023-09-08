@@ -67,7 +67,7 @@ class StackOverflowSampleDataStream(Stream):
 
             # We are under the assuption that
             # primary key(s) have values present
-            primary_keys_present: bool = True
+            primary_keys_have_value_present: bool = True
 
 			# The data is held a attributes to each sub root row
             # We grab each attibute item and type it according to the schmea
@@ -88,11 +88,11 @@ class StackOverflowSampleDataStream(Stream):
                 else:
                     row[column] = None
                     if column in self.primary_keys:
-                        primary_keys_present = False
+                        primary_keys_have_value_present = False
 
             # If the primary key not null flag is True
             # yeild the row as a dictrionary
-            if primary_keys_present:
+            if primary_keys_have_value_present:
                 yield row
 
             # We clear the element so we don't use memory
