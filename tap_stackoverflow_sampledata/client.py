@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import os
 
-from typing import Optional, Iterable
+from typing import Any, Optional, Iterable
 
 from singer_sdk.streams import Stream
 from lxml import etree
@@ -63,25 +63,21 @@ class StackOverflowSampleDataStream(Stream):
         for _, element in etree.iterparse(self.data_file):
 
             # Dictionaries to place and raw refined rows
-            xml_row: dict = {}
             row: dict = {}
 
             # The data is held a attributes to each sub root row
             # We grab each attibute item and type it according to the schmea
-            key: str
-            value: str
-            for key, value in element.attrib.items():
-                if 'integer' in column_value_types.get(key):
-                    value = int(value)
-                # We add the key value pair to the xml_row dictionary
-                xml_row[key] = value
-
             # We use the columns list to add columns that didn't
             # have any data in the xml row and set the
             # column value to none or null
+            column: str
             for column in column_names:
-                if column in xml_row:
-                    row[column] = xml_row[column]
+                if column in element.attrib.keys():
+                    value = element.attrib.get(column)
+                    if 'integer' in column_value_types.get(column):
+                        row[column] = int(value)
+                    else:
+                        row[column] = value
                 else:
                     row[column] = None
 
