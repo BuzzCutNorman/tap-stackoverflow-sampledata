@@ -1,4 +1,9 @@
 """Stream type classes for tap-stackoverflow-sampledata."""
+
+from __future__ import annotations
+
+import typing as t
+
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
 from tap_stackoverflow_sampledata.client import StackOverflowSampleDataStream
@@ -6,9 +11,9 @@ from tap_stackoverflow_sampledata.client import StackOverflowSampleDataStream
 
 class BadgesStream(StackOverflowSampleDataStream):
     """Define custom stream."""
-    name = "badges"
-    file_name = "Badges.xml"
-    primary_keys = ["Id"]
+    name: str = "badges"
+    file_name: str = "Badges.xml"
+    primary_keys: t.ClassVar[list[str]] = ["Id"]
     replication_key = None
     schema = th.PropertiesList(
         th.Property("Id", th.IntegerType),
@@ -22,9 +27,9 @@ class BadgesStream(StackOverflowSampleDataStream):
 
 class CommentsStream(StackOverflowSampleDataStream):
     """Define custom stream."""
-    name = "comments"
-    file_name = "Comments.xml"
-    primary_keys = ["Id"]
+    name: str = "comments"
+    file_name: str = "Comments.xml"
+    primary_keys: t.ClassVar[list[str]] = ["Id"]
     replication_key = None
     schema = th.PropertiesList(
         th.Property("Id", th.IntegerType),
@@ -39,9 +44,9 @@ class CommentsStream(StackOverflowSampleDataStream):
 
 class PostLinksStream(StackOverflowSampleDataStream):
     """Define custom stream."""
-    name = "postlinks"
-    file_name = "PostLinks.xml"
-    primary_keys = ["Id"]
+    name: str = "postlinks"
+    file_name: str = "PostLinks.xml"
+    primary_keys: t.ClassVar[list[str]] = ["Id"]
     replication_key = None
     schema = th.PropertiesList(
         th.Property("Id", th.IntegerType),
@@ -54,9 +59,9 @@ class PostLinksStream(StackOverflowSampleDataStream):
 
 class PostsStream(StackOverflowSampleDataStream):
     """Define custom stream."""
-    name = "posts"
-    file_name = "Posts.xml"
-    primary_keys = ["Id"]
+    name: str = "posts"
+    file_name: str = "Posts.xml"
+    primary_keys: t.ClassVar[list[str]] = ["Id"]
     replication_key = None
     schema = th.PropertiesList(
         th.Property("Id", th.IntegerType),
@@ -83,9 +88,9 @@ class PostsStream(StackOverflowSampleDataStream):
 
 class TagsStream(StackOverflowSampleDataStream):
     """Define custom stream."""
-    name = "tags"
-    file_name = "Tags.xml"
-    primary_keys = ["Id"]
+    name: str = "tags"
+    file_name: str = "Tags.xml"
+    primary_keys: t.ClassVar[list[str]] = ["Id"]
     replication_key = None
     schema = th.PropertiesList(
         th.Property("Id", th.IntegerType),
@@ -98,9 +103,9 @@ class TagsStream(StackOverflowSampleDataStream):
 
 class UsersStream(StackOverflowSampleDataStream):
     """Define custom stream."""
-    name = "users"
-    file_name = "Users.xml"
-    primary_keys = ["Id"]
+    name: str = "users"
+    file_name: str = "Users.xml"
+    primary_keys: t.ClassVar[list[str]] = ["Id"]
     replication_key = None
     schema = th.PropertiesList(
         th.Property("Id", th.IntegerType),
@@ -117,9 +122,9 @@ class UsersStream(StackOverflowSampleDataStream):
 
 class VotesStream(StackOverflowSampleDataStream):
     """Define custom stream."""
-    name = "votes"
-    file_name = "Votes.xml"
-    primary_keys = ["Id"]
+    name: str = "votes"
+    file_name: str = "Votes.xml"
+    primary_keys: t.ClassVar[list[str]] = ["Id"]
     replication_key = None
     schema = th.PropertiesList(
         th.Property("Id", th.IntegerType),
