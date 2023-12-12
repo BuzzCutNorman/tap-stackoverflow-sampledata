@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import os
 
-from typing import Any, Optional, Iterable
+from typing import Optional, Iterable
 
 from singer_sdk.streams import Stream
 from lxml import etree
@@ -44,7 +44,7 @@ class StackOverflowSampleDataStream(Stream):
         # Get the Stream Properties Dictornary from the Schema
         properties: dict = self.schema.get('properties')
 
-        # Blank list to hold al the Primary Key columns
+        # Blank list to hold all the Primary Key columns
         column_names: list[str] = []
         column_value_types: dict[str, list[str]] = {}
 
@@ -58,19 +58,19 @@ class StackOverflowSampleDataStream(Stream):
             column_value_types[name] = properties.get(name).get('type')
 
         # Grab the rows from the xml file using by
-        # opening the file using using a iternation parser
+        # opening the file using using a iteration parser
         element: etree._Element
         for _, element in etree.iterparse(self.data_file):
 
             # Dictionaries to place and raw refined rows
             row: dict = {}
 
-            # We are under the assuption that
+            # We are under the assumption that
             # primary key(s) have values present
             primary_keys_have_value_present: bool = True
 
 			# The data is held a attributes to each sub root row
-            # We grab each attibute item and type it according to the schmea
+            # We grab each attribute item and type it according to the schema
             # We use the columns list to add columns that didn't
             # have any data in the xml row and set the
             # column value to none or null
@@ -91,7 +91,7 @@ class StackOverflowSampleDataStream(Stream):
                         primary_keys_have_value_present = False
 
             # If the primary key not null flag is True
-            # yeild the row as a dictrionary
+            # yield the row as a dictionary
             if primary_keys_have_value_present:
                 yield row
 
@@ -107,7 +107,7 @@ class StackOverflowSampleDataStream(Stream):
         directories and iterate files inside.
         """
 
-        # Check that the file_direcotry from the meltano.yaml exists
+        # Check that the file_directory from the meltano.yaml exists
         # if it isn't we alert there is an issue
         if not os.path.exists(self.file_directory):
             raise Exception(f"File path does not exist {self.file_directory}")
@@ -123,14 +123,14 @@ class StackOverflowSampleDataStream(Stream):
         """Return a boolean of whether the path is a file includes an XML extension."""
         is_valid = True
 
-        # Check to see if this is a direcotry turn
+        # Check to see if this is a directory turn
         # the is valid flag to false and
         # say you are skipping the file
         if os.path.isdir(file_path):
             is_valid = False
             self.logger.info(f"Skipping folder {file_path}")
 
-        # Check to see if the if the file has a .xml extention
+        # Check to see if the if the file has a .xml extension
         # if it doesn't turn the is valid flag to False and
         # say you are skipping the file
         elif file_path[-4:] != ".xml":
