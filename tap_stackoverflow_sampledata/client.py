@@ -1,14 +1,12 @@
-"""Custom client handling, including
-StackOverflowSampleDataStream base class."""
+"""StackOverflowSampleDataStream base class."""
 
 from __future__ import annotations
 
 import os
+from typing import Iterable, Optional
 
-from typing import Optional, Iterable
-
-from singer_sdk.streams import Stream
 from lxml import etree
+from singer_sdk.streams import Stream
 
 
 class StackOverflowSampleDataStream(Stream):
