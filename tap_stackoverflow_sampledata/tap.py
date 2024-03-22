@@ -23,6 +23,7 @@ from tap_stackoverflow_sampledata.streams import (
     UsersStream,
     VotesStream,
 )
+import sys
 
 if TYPE_CHECKING:
     from singer_sdk._singerlib import Catalog
@@ -127,7 +128,7 @@ class TapStackOverflowSampleData(Tap):
 
         if data_directory is None:
             self.logger.error("No stackoverflow_data_directory configured.")
-            exit(1)
+            sys.exit(1)
 
         if os.path.exists(data_directory):
             if os.path.isdir(data_directory):
@@ -140,17 +141,17 @@ class TapStackOverflowSampleData(Tap):
                             stream_types.append(STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower()))
                 else:
                     self.logger.error("There are no files in the directory")
-                    exit(1)
+                    sys.exit(1)
             else:
                 self.logger.error("The path given is not a direcotry")
-                exit(1)
+                sys.exit(1)
         else:
             self.logger.error("The path doesn't exist")
-            exit(1)
+            sys.exit(1)
 
         if not stream_types:
             self.logger.error("No Stackovlerflow files found.")
-            exit(1)
+            sys.exit(1)
 
         return stream_types
 
