@@ -8,17 +8,27 @@ keywords = [
     "ELT",
     "stackoverflow-sampledata",
 ]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4"
-singer-sdk = { version="~=0.34.0" }
+python = ">=3.8"
+importlib-resources = { version = "==6.1.*", python = "<3.9" }
+singer-sdk = { version="~=0.36.1" }
 fs-s3fs = { version = "~=1.1.1", optional = true }
-lxml = "^4.9.3"
+lxml = "^5.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = ">=7.4.0"
-singer-sdk = { version="~=0.34.0", extras = ["testing"] }
+singer-sdk = { version="~=0.36.1", extras = ["testing"] }
 
 [tool.poetry.extras]
 s3 = ["fs-s3fs"]
@@ -29,7 +39,7 @@ warn_unused_configs = true
 
 [tool.ruff]
 src = ["tap_stackoverflow_sampledata"]
-target-version = "py37"
+target-version = "py38"
 
 [tool.ruff.lint]
 ignore = [
@@ -50,7 +60,7 @@ known-first-party = ["tap_stackoverflow_sampledata"]
 convention = "google"
 
 [build-system]
-requires = ["poetry-core>=1.0.8"]
+requires = ["poetry-core==1.9.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
