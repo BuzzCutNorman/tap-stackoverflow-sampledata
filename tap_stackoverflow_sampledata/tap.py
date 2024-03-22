@@ -87,14 +87,16 @@ class TapStackOverflowSampleData(Tap):
                         th.Property(
                             "root",
                             th.StringType,
-                            description="the directory you want batch messages to be placed in\n"\
-                                        "example: file://test/batches",
+                            description=("the directory you want batch messages to be placed in\n"
+                                        "example: file://test/batches"
+                            )
                         ),
                         th.Property(
                             "prefix",
                             th.StringType,
-                            description="What prefix you want your messages to have\n"\
-                                        "example: test-batch-",
+                            description=("What prefix you want your messages to have\n"
+                                        "example: test-batch-"
+                            )
                         )
                     )
                 )
@@ -117,7 +119,8 @@ class TapStackOverflowSampleData(Tap):
 
     def get_streams(self) -> List[Stream]:
         """Return a list of file configs.
-        Directly from the config.json or in an external file
+
+        Directly from the config.json or in an external file.
         """
         data_directory = self.config.get("stackoverflow_data_directory")
         stream_types: List[Stream] = []
