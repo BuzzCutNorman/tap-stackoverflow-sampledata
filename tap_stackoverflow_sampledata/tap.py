@@ -117,13 +117,13 @@ class TapStackOverflowSampleData(Tap):
             PluginCapabilities.ABOUT,
         ]
 
-    def get_streams(self) -> List[Stream]:
+    def get_streams(self) -> list[Stream]:
         """Return a list of file configs.
 
         Directly from the config.json or in an external file.
         """
         data_directory = self.config.get("stackoverflow_data_directory")
-        stream_types: List[Stream] = []
+        stream_types: list[Stream] = []
 
         if data_directory is None:
             self.logger.error("No stackoverflow_data_directory configured.")
@@ -154,7 +154,7 @@ class TapStackOverflowSampleData(Tap):
 
         return stream_types
 
-    def discover_streams(self) -> List[Stream]:
+    def discover_streams(self) -> list[Stream]:
         """Return a list of discovered streams."""
         STREAM_TYPES = self.get_streams()
 
