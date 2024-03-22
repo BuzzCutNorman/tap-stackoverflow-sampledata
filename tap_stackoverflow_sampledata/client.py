@@ -9,6 +9,9 @@ from lxml import etree
 from singer_sdk.streams import Stream
 
 
+class NonExistentDataDirectoryError(Exception):
+    """Exception raised when the give data directory does not exist."""
+
 class StackOverflowSampleDataStream(Stream):
     """Stream class for stackoverflow-sampledata streams."""
 
@@ -108,7 +111,8 @@ class StackOverflowSampleDataStream(Stream):
         # Check that the file_directory from the meltano.yaml exists
         # if it isn't we alert there is an issue
         if not os.path.exists(self.file_directory):
-            raise Exception(f"File path does not exist {self.file_directory}")
+            msg: str = f"File path does not exist {self.file_directory}"
+            raise NonExistentDataDirectoryError(msg)
 
         # Add the file Streams file_name to a direcotory path
         # Pass along file_path if it points to the Stream's file_name
@@ -126,13 +130,13 @@ class StackOverflowSampleDataStream(Stream):
         # say you are skipping the file
         if os.path.isdir(file_path):
             is_valid = False
-            self.logger.info(f"Skipping folder {file_path}")
+            self.logger.info("Skipping folder %a", file_path)
 
         # Check to see if the if the file has a .xml extension
         # if it doesn't turn the is valid flag to False and
         # say you are skipping the file
         elif file_path[-4:] != ".xml":
             is_valid = False
-            self.logger.warning(f"Skipping non xml file '{file_path}'")
+            self.logger.warning("Skipping non xml file '%a'", file_path)
 
         return is_valid
