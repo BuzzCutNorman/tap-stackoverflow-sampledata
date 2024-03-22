@@ -11,7 +11,7 @@ from singer_sdk.streams import Stream
 
 class StackOverflowSampleDataStream(Stream):
     """Stream class for stackoverflow-sampledata streams."""
-    
+
     file_name: str = None
 
     _file_path: str = None
@@ -51,7 +51,7 @@ class StackOverflowSampleDataStream(Stream):
         #  We also grab and append the data type to 
         #  Then insert it into column_value_types dict
         for column in properties.keys():
-            name = str(column) 
+            name = str(column)
             column_names.append(name)
             column_value_types[name] = properties.get(name).get('type')
 
@@ -67,7 +67,7 @@ class StackOverflowSampleDataStream(Stream):
             # primary key(s) have values present
             primary_keys_have_value_present: bool = True
 
-			# The data is held a attributes to each sub root row
+            # The data is held a attributes to each sub root row
             # We grab each attribute item and type it according to the schema
             # We use the columns list to add columns that didn't
             # have any data in the xml row and set the
@@ -101,10 +101,10 @@ class StackOverflowSampleDataStream(Stream):
 
     def get_data_file_path(self):
         """Return a list of file paths to read.
+
         This tap accepts file names and directories so it will detect
         directories and iterate files inside.
         """
-
         # Check that the file_directory from the meltano.yaml exists
         # if it isn't we alert there is an issue
         if not os.path.exists(self.file_directory):
