@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 import os
+from typing import TYPE_CHECKING, List
 
-from typing import List
-
-from singer_sdk import Tap, Stream
+from singer_sdk import Stream, Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
 from singer_sdk.helpers._classproperty import classproperty
 from singer_sdk.helpers.capabilities import (
@@ -14,8 +13,7 @@ from singer_sdk.helpers.capabilities import (
     PluginCapabilities,
     TapCapabilities,
 )
-from singer_sdk._singerlib import Catalog
-# TODO: Import your custom stream types here:
+
 from tap_stackoverflow_sampledata.streams import (
     BadgesStream,
     CommentsStream,
@@ -25,6 +23,9 @@ from tap_stackoverflow_sampledata.streams import (
     UsersStream,
     VotesStream,
 )
+
+if TYPE_CHECKING:
+    from singer_sdk._singerlib import Catalog
 
 # Used later to match Stream Class to files
 STACKOVERFLOW_FILE_NAMES_TO_STREAMS = {
