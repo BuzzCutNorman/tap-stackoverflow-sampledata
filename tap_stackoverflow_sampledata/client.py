@@ -22,12 +22,14 @@ class StackOverflowSampleDataStream(Stream):
 
     @property
     def file_directory(self) -> str:
+        """Property that sets and gets the stackoverflow data directory forn config."""
         if self._file_directory is None:
             self._file_directory = self.config.get("stackoverflow_data_directory")
         return self._file_directory
 
     @property
     def data_file(self) -> str:
+        """Property that sets and gets the current file path."""
         if self._file_path is None:
             self.get_data_file_path()
         return self._file_path
@@ -53,7 +55,7 @@ class StackOverflowSampleDataStream(Stream):
         #  Then append them to the columns names list
         #  We also grab and append the data type to 
         #  Then insert it into column_value_types dict
-        for column in properties.keys():
+        for column in properties:
             name = str(column)
             column_names.append(name)
             column_value_types[name] = properties.get(name).get('type')
@@ -80,7 +82,7 @@ class StackOverflowSampleDataStream(Stream):
             # set the primary key not null flag to False
             column: str
             for column in column_names:
-                if column in element.attrib.keys():
+                if column in element.attrib:
                     value = element.attrib.get(column)
                     if 'integer' in column_value_types.get(column):
                         row[column] = int(value)
@@ -102,7 +104,7 @@ class StackOverflowSampleDataStream(Stream):
             if element.getparent() is not None:
                 element.getparent().remove(element)
 
-    def get_data_file_path(self):
+    def get_data_file_path(self) -> None:
         """Return a list of file paths to read.
 
         This tap accepts file names and directories so it will detect
