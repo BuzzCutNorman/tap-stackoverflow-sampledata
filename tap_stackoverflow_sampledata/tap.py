@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import sys
 from typing import TYPE_CHECKING, List
 
 from singer_sdk import Stream, Tap
@@ -23,7 +24,6 @@ from tap_stackoverflow_sampledata.streams import (
     UsersStream,
     VotesStream,
 )
-import sys
 
 if TYPE_CHECKING:
     from singer_sdk._singerlib import Catalog
@@ -157,9 +157,9 @@ class TapStackOverflowSampleData(Tap):
 
     def discover_streams(self) -> list[Stream]:
         """Return a list of discovered streams."""
-        STREAM_TYPES = self.get_streams()
+        stream_types = self.get_streams()
 
-        return [stream_class(self) for stream_class in STREAM_TYPES]
+        return [stream_class(self) for stream_class in stream_types]
 
 if __name__ == "__main__":
     TapStackOverflowSampleData.cli()
