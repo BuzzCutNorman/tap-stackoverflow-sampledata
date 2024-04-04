@@ -1,19 +1,20 @@
-"""Custom client handling, including
-StackOverflowSampleDataStream base class."""
+"""StackOverflowSampleDataStream base class."""
 
 from __future__ import annotations
 
 import os
+from typing import Iterable, Optional
 
-from typing import Optional, Iterable
-
-from singer_sdk.streams import Stream
 from lxml import etree
+from singer_sdk.streams import Stream
 
+
+class NonExistentDataDirectoryError(Exception):
+    """Exception raised when the give data directory does not exist."""
 
 class StackOverflowSampleDataStream(Stream):
     """Stream class for stackoverflow-sampledata streams."""
-    
+
     file_name: str = None
 
     _file_path: str = None
@@ -21,12 +22,14 @@ class StackOverflowSampleDataStream(Stream):
 
     @property
     def file_directory(self) -> str:
+        """Property that sets and gets the stackoverflow data directory forn config."""
         if self._file_directory is None:
             self._file_directory = self.config.get("stackoverflow_data_directory")
         return self._file_directory
 
     @property
     def data_file(self) -> str:
+        """Property that sets and gets the current file path."""
         if self._file_path is None:
             self.get_data_file_path()
         return self._file_path
@@ -52,8 +55,8 @@ class StackOverflowSampleDataStream(Stream):
         #  Then append them to the columns names list
         #  We also grab and append the data type to 
         #  Then insert it into column_value_types dict
-        for column in properties.keys():
-            name = str(column) 
+        for column in properties:
+            name = str(column)
             column_names.append(name)
             column_value_types[name] = properties.get(name).get('type')
 
@@ -69,7 +72,7 @@ class StackOverflowSampleDataStream(Stream):
             # primary key(s) have values present
             primary_keys_have_value_present: bool = True
 
-			# The data is held a attributes to each sub root row
+            # The data is held a attributes to each sub root row
             # We grab each attribute item and type it according to the schema
             # We use the columns list to add columns that didn't
             # have any data in the xml row and set the
@@ -79,7 +82,7 @@ class StackOverflowSampleDataStream(Stream):
             # set the primary key not null flag to False
             column: str
             for column in column_names:
-                if column in element.attrib.keys():
+                if column in element.attrib:
                     value = element.attrib.get(column)
                     if 'integer' in column_value_types.get(column):
                         row[column] = int(value)
@@ -101,16 +104,17 @@ class StackOverflowSampleDataStream(Stream):
             if element.getparent() is not None:
                 element.getparent().remove(element)
 
-    def get_data_file_path(self):
+    def get_data_file_path(self) -> None:
         """Return a list of file paths to read.
+
         This tap accepts file names and directories so it will detect
         directories and iterate files inside.
         """
-
         # Check that the file_directory from the meltano.yaml exists
         # if it isn't we alert there is an issue
         if not os.path.exists(self.file_directory):
-            raise Exception(f"File path does not exist {self.file_directory}")
+            msg: str = f"File path does not exist {self.file_directory}"
+            raise NonExistentDataDirectoryError(msg)
 
         # Add the file Streams file_name to a direcotory path
         # Pass along file_path if it points to the Stream's file_name
@@ -128,13 +132,13 @@ class StackOverflowSampleDataStream(Stream):
         # say you are skipping the file
         if os.path.isdir(file_path):
             is_valid = False
-            self.logger.info(f"Skipping folder {file_path}")
+            self.logger.info("Skipping folder %a", file_path)
 
         # Check to see if the if the file has a .xml extension
         # if it doesn't turn the is valid flag to False and
         # say you are skipping the file
         elif file_path[-4:] != ".xml":
             is_valid = False
-            self.logger.warning(f"Skipping non xml file '{file_path}'")
+            self.logger.warning("Skipping non xml file '%a'", file_path)
 
         return is_valid

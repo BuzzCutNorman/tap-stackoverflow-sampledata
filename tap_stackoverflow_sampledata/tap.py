@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import os
+import sys
+from typing import TYPE_CHECKING, List
 
-from typing import List
-
-from singer_sdk import Tap, Stream
+from singer_sdk import Stream, Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
 from singer_sdk.helpers._classproperty import classproperty
 from singer_sdk.helpers.capabilities import (
@@ -14,8 +14,7 @@ from singer_sdk.helpers.capabilities import (
     PluginCapabilities,
     TapCapabilities,
 )
-from singer_sdk._singerlib import Catalog
-# TODO: Import your custom stream types here:
+
 from tap_stackoverflow_sampledata.streams import (
     BadgesStream,
     CommentsStream,
@@ -25,6 +24,9 @@ from tap_stackoverflow_sampledata.streams import (
     UsersStream,
     VotesStream,
 )
+
+if TYPE_CHECKING:
+    from singer_sdk._singerlib import Catalog
 
 # Used later to match Stream Class to files
 STACKOVERFLOW_FILE_NAMES_TO_STREAMS = {
@@ -86,14 +88,16 @@ class TapStackOverflowSampleData(Tap):
                         th.Property(
                             "root",
                             th.StringType,
-                            description="the directory you want batch messages to be placed in\n"\
-                                        "example: file://test/batches",
+                            description=("the directory you want batch messages to be placed in\n"
+                                        "example: file://test/batches"
+                            )
                         ),
                         th.Property(
                             "prefix",
                             th.StringType,
-                            description="What prefix you want your messages to have\n"\
-                                        "example: test-batch-",
+                            description=("What prefix you want your messages to have\n"
+                                        "example: test-batch-"
+                            )
                         )
                     )
                 )
@@ -114,16 +118,17 @@ class TapStackOverflowSampleData(Tap):
             PluginCapabilities.ABOUT,
         ]
 
-    def get_streams(self) -> List[Stream]:
+    def get_streams(self) -> list[Stream]:
         """Return a list of file configs.
-        Directly from the config.json or in an external file
+
+        Directly from the config.json or in an external file.
         """
         data_directory = self.config.get("stackoverflow_data_directory")
-        stream_types: List[Stream] = []
+        stream_types: list[Stream] = []
 
         if data_directory is None:
             self.logger.error("No stackoverflow_data_directory configured.")
-            exit(1)
+            sys.exit(1)
 
         if os.path.exists(data_directory):
             if os.path.isdir(data_directory):
@@ -136,25 +141,25 @@ class TapStackOverflowSampleData(Tap):
                             stream_types.append(STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower()))
                 else:
                     self.logger.error("There are no files in the directory")
-                    exit(1)
+                    sys.exit(1)
             else:
                 self.logger.error("The path given is not a direcotry")
-                exit(1)
+                sys.exit(1)
         else:
             self.logger.error("The path doesn't exist")
-            exit(1)
+            sys.exit(1)
 
         if not stream_types:
             self.logger.error("No Stackovlerflow files found.")
-            exit(1)
+            sys.exit(1)
 
         return stream_types
 
-    def discover_streams(self) -> List[Stream]:
+    def discover_streams(self) -> list[Stream]:
         """Return a list of discovered streams."""
-        STREAM_TYPES = self.get_streams()
+        stream_types = self.get_streams()
 
-        return [stream_class(self) for stream_class in STREAM_TYPES]
+        return [stream_class(self) for stream_class in stream_types]
 
 if __name__ == "__main__":
     TapStackOverflowSampleData.cli()
