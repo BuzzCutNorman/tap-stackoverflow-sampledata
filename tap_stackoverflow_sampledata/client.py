@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import os
-from typing import Iterable, Optional
+from typing import TYPE_CHECKING, Iterable
 
 from lxml import etree
 from singer_sdk.streams import Stream
 
+if TYPE_CHECKING:
+    from singer_sdk.helpers.types import Context
 
 class NonExistentDataDirectoryError(Exception):
     """Exception raised when the give data directory does not exist."""
@@ -34,7 +36,10 @@ class StackOverflowSampleDataStream(Stream):
             self.get_data_file_path()
         return self._file_path
 
-    def get_records(self, context: Optional[dict]) -> Iterable[dict]:
+    def get_records(
+        self,
+        context: Context | None,  # noqa: ARG002
+    ) -> Iterable[dict]:
         """Return a generator of row-type dictionary objects.
 
         Args:
