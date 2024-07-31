@@ -50,7 +50,7 @@ class StackOverflowSampleDataStream(Stream):
             One dict per record.
         """
         # Get the Stream Properties Dictornary from the Schema
-        properties: dict = self.schema.get('properties')
+        properties: dict = self.schema.get("properties")
 
         # Blank list to hold all the Primary Key columns
         column_names: list[str] = []
@@ -58,12 +58,12 @@ class StackOverflowSampleDataStream(Stream):
 
         #  We grab the column names from the Stream Schema
         #  Then append them to the columns names list
-        #  We also grab and append the data type to 
+        #  We also grab and append the data type to
         #  Then insert it into column_value_types dict
         for column in properties:
             name = str(column)
             column_names.append(name)
-            column_value_types[name] = properties.get(name).get('type')
+            column_value_types[name] = properties.get(name).get("type")
 
         # Grab the rows from the xml file using by
         # opening the file using using a iteration parser
@@ -89,7 +89,7 @@ class StackOverflowSampleDataStream(Stream):
             for column in column_names:
                 if column in element.attrib:
                     value = element.attrib.get(column)
-                    if 'integer' in column_value_types.get(column):
+                    if "integer" in column_value_types.get(column):
                         row[column] = int(value)
                     else:
                         row[column] = value
