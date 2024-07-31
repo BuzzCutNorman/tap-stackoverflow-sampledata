@@ -117,7 +117,7 @@ class StackOverflowSampleDataStream(Stream):
         """
         # Check that the file_directory from the meltano.yaml exists
         # if it isn't we alert there is an issue
-        if not os.path.exists(self.file_directory):
+        if not os.path.exists(self.file_directory):  # noqa: PTH110
             msg: str = f"File path does not exist {self.file_directory}"
             raise NonExistentDataDirectoryError(msg)
 
@@ -135,7 +135,7 @@ class StackOverflowSampleDataStream(Stream):
         # Check to see if this is a directory turn
         # the is valid flag to false and
         # say you are skipping the file
-        if os.path.isdir(file_path):
+        if os.path.isdir(file_path):  # noqa: PTH112
             is_valid = False
             self.logger.info("Skipping folder %a", file_path)
 
