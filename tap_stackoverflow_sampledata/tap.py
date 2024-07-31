@@ -133,12 +133,14 @@ class TapStackOverflowSampleData(Tap):
         if os.path.exists(data_directory):
             if os.path.isdir(data_directory):
                 if len(os.listdir(data_directory)) > 0:
-                    for file in os.listdir(data_directory):
-                        # If the file is in the dictionary
-                        # we add it the Streams Classes that will be
-                        # passed in the dicover_streams process.
-                        if STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower()):
-                            stream_types.append(STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower()))
+                    # If the file is in the dictionary
+                    # we add it the Streams Classes that will be
+                    # passed in the dicover_streams process.
+                    stream_types.extend(
+                        STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower())
+                        for file in os.listdir(data_directory)
+                        if STACKOVERFLOW_FILE_NAMES_TO_STREAMS.get(file.lower())
+                    )
                 else:
                     self.logger.error("There are no files in the directory")
                     sys.exit(1)
