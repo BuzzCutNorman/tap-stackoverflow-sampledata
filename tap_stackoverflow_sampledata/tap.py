@@ -78,7 +78,7 @@ class TapStackOverflowSampleData(Tap):
                         th.Property(
                             "compression",
                             th.StringType,
-                            description="Currently the only compression options is gzip",
+                            description="Currently the only compression options is gzip",  # noqa: E501
                         )
                     )
                 ),
@@ -88,7 +88,7 @@ class TapStackOverflowSampleData(Tap):
                         th.Property(
                             "root",
                             th.StringType,
-                            description=("the directory you want batch messages to be placed in\n"
+                            description=("the directory you want batch messages to be placed in\n"  # noqa: E501
                                         "example: file://test/batches"
                             )
                         ),
@@ -130,8 +130,8 @@ class TapStackOverflowSampleData(Tap):
             self.logger.error("No stackoverflow_data_directory configured.")
             sys.exit(1)
 
-        if os.path.exists(data_directory):
-            if os.path.isdir(data_directory):
+        if os.path.exists(data_directory):  # noqa: PTH110
+            if os.path.isdir(data_directory):  # noqa: PTH112
                 if len(os.listdir(data_directory)) > 0:
                     # If the file is in the dictionary
                     # we add it the Streams Classes that will be
