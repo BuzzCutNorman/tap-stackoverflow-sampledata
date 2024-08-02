@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tap-stackoverflow-sampledata"
-version = "0.1.2"
+version = "0.1.3"
 description = "`tap-stackoverflow-sampledata` is a Singer tap for stackoverflow-sampledata, built with the Meltano SDK for Singer Taps."
 readme = "README.md"
 authors = ["Dan Norman <buzzcutnorman@gmail.com>"]
