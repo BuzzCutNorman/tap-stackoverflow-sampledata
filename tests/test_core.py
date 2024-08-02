@@ -2,9 +2,9 @@
 
 import datetime
 
-from singer_sdk.testing import get_standard_tap_tests
+from singer_sdk.testing import get_tap_test_class
 
-from tap_stackoverflow_sampledata.tap import Tapstackoverflow-sampledata
+from tap_stackoverflow_sampledata.tap import TapStackOverflowSampleData
 
 SAMPLE_CONFIG = {
     "start_date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
@@ -13,14 +13,10 @@ SAMPLE_CONFIG = {
 
 
 # Run standard built-in tap tests from the SDK:
-def test_standard_tap_tests():
-    """Run standard tap tests from the SDK."""
-    tests = get_standard_tap_tests(
-        Tapstackoverflow-sampledata,
-        config=SAMPLE_CONFIG
-    )
-    for test in tests:
-        test()
+TestTapStackOverflowSampleData = get_tap_test_class(
+    tap_class=TapStackOverflowSampleData,
+    config=SAMPLE_CONFIG,
+)
 
 
 # TODO: Create additional tests as appropriate for your tap.

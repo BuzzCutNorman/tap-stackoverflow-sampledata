@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import os
-from typing import Iterable, Optional
+from typing import TYPE_CHECKING, Iterable
 
 from lxml import etree
 from singer_sdk.streams import Stream
 
+if TYPE_CHECKING:
+    from singer_sdk.helpers.types import Context
 
 class NonExistentDataDirectoryError(Exception):
     """Exception raised when the give data directory does not exist."""
@@ -34,7 +36,10 @@ class StackOverflowSampleDataStream(Stream):
             self.get_data_file_path()
         return self._file_path
 
-    def get_records(self, context: Optional[dict]) -> Iterable[dict]:
+    def get_records(
+        self,
+        context: Context | None,  # noqa: ARG002
+    ) -> Iterable[dict]:
         """Return a generator of row-type dictionary objects.
 
         Args:
@@ -45,7 +50,7 @@ class StackOverflowSampleDataStream(Stream):
             One dict per record.
         """
         # Get the Stream Properties Dictornary from the Schema
-        properties: dict = self.schema.get('properties')
+        properties: dict = self.schema.get("properties")
 
         # Blank list to hold all the Primary Key columns
         column_names: list[str] = []
@@ -53,12 +58,12 @@ class StackOverflowSampleDataStream(Stream):
 
         #  We grab the column names from the Stream Schema
         #  Then append them to the columns names list
-        #  We also grab and append the data type to 
+        #  We also grab and append the data type to
         #  Then insert it into column_value_types dict
         for column in properties:
             name = str(column)
             column_names.append(name)
-            column_value_types[name] = properties.get(name).get('type')
+            column_value_types[name] = properties.get(name).get("type")
 
         # Grab the rows from the xml file using by
         # opening the file using using a iteration parser
@@ -84,7 +89,7 @@ class StackOverflowSampleDataStream(Stream):
             for column in column_names:
                 if column in element.attrib:
                     value = element.attrib.get(column)
-                    if 'integer' in column_value_types.get(column):
+                    if "integer" in column_value_types.get(column):
                         row[column] = int(value)
                     else:
                         row[column] = value
@@ -112,7 +117,7 @@ class StackOverflowSampleDataStream(Stream):
         """
         # Check that the file_directory from the meltano.yaml exists
         # if it isn't we alert there is an issue
-        if not os.path.exists(self.file_directory):
+        if not os.path.exists(self.file_directory):  # noqa: PTH110
             msg: str = f"File path does not exist {self.file_directory}"
             raise NonExistentDataDirectoryError(msg)
 
@@ -130,7 +135,7 @@ class StackOverflowSampleDataStream(Stream):
         # Check to see if this is a directory turn
         # the is valid flag to false and
         # say you are skipping the file
-        if os.path.isdir(file_path):
+        if os.path.isdir(file_path):  # noqa: PTH112
             is_valid = False
             self.logger.info("Skipping folder %a", file_path)
 
