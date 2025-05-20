@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from singer_sdk import Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
+from singer_sdk.contrib.msgspec import MsgSpecWriter
 from singer_sdk.helpers._classproperty import classproperty
 from singer_sdk.helpers.capabilities import (
     CapabilitiesEnum,
@@ -47,6 +48,7 @@ class TapStackOverflowSampleData(Tap):
     """stackoverflow-sampledata tap class."""
 
     name = "tap-stackoverflow-sampledata"
+    message_writer_class = MsgSpecWriter
 
     @property
     def input_catalog(self) -> Catalog:
