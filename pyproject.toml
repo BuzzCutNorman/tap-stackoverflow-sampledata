@@ -38,7 +38,9 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling"]
+requires = [
+    "hatchling>=1,<2",
+]
 build-backend = "hatchling.build"
 
 [tool.mypy]
