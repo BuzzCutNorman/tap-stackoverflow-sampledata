@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import os
 import sys
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
-from singer_sdk import Stream, Tap
+from singer_sdk import Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
 from singer_sdk.helpers._classproperty import classproperty
 from singer_sdk.helpers.capabilities import (
@@ -26,6 +26,7 @@ from tap_stackoverflow_sampledata.streams import (
 )
 
 if TYPE_CHECKING:
+    from singer_sdk import Stream
     from singer_sdk._singerlib import Catalog
 
 # Used later to match Stream Class to files
@@ -39,7 +40,7 @@ STACKOVERFLOW_FILE_NAMES_TO_STREAMS = {
     "votes.xml": VotesStream
 }
 
-STREAM_TYPES = List[Stream]
+STREAM_TYPES: list[Stream]
 
 
 class TapStackOverflowSampleData(Tap):
