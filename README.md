@@ -5,13 +5,13 @@
 Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
 
 ### Whats New 🛳️🎉
+**2024-08-01 Upgraded to Meltano Singer-SDK 0.46.4:**  Edger from Arch put a quicker JSON encoder in place.  The SDK's MsgSpecReader class I switched to utilizes [msgspec]( https://jcristharif.com/msgspec/).  It is lightweight and fast.  Big Thank You 🙏 to Jim Crist-Harif for writing and maintaining `msgspec` and Edger for updating the SDK to utlize it. 
+
 **2024-08-01 Upgraded to Meltano Singer-SDK 0.39.0**
 
-**2024-04-04 Upgraded to Meltano Singer-SDK 0.36.1:**
+**2024-04-04 Upgraded to Meltano Singer-SDK 0.36.1**
 
-**2023-12-14 Upgraded to Meltano Singer-SDK 0.34.0:**
-
-**2023-09-18 Upgraded to Meltano Singer-SDK 0.31.1:** Small code improvement.  I am going to start doing versioned releases.
+**2023-12-14 Upgraded to Meltano Singer-SDK 0.34.0**
 
 ## Installation
 
@@ -36,13 +36,13 @@ You will need to download the Stack Overflow files, uzip them, and place then in
 
 |File                                                                                 | Zipped Size | Unzipped Size | Rows     |
 |-------------------------------------------------------------------------------------|------------:|--------------:|---------:|
-[Badges](https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z)      | 342 MB      | 5.28 GB       | 48,022,288
-[Comments](https://archive.org/download/stackexchange/stackoverflow.com-Comments.7z)  | 5.18 GB     | 25.2 GB       | 88,222,951
-[PostLinks](https://archive.org/download/stackexchange/stackoverflow.com-PostLinks.7z)| 116 MB      | 990 MB        | 8,666,593
-[Posts](https://archive.org/download/stackexchange/stackoverflow.com-Posts.7z)        | 18.5 GB     | 93.9 GB       | 58,329,356
-[Tags](https://archive.org/download/stackexchange/stackoverflow.com-Tags.7z)          | 902 KB      | 5.45 MB       | 64,465
-[Users](https://archive.org/download/stackexchange/stackoverflow.com-Users.7z)        | 683 MB      | 4.78 GB       | 19,942,787
-[Votes](https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z)        | 1.28 GB     | 20.6 GB       | 228,077,281
+[Badges](https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z)      | 514 MB      | 5.65 GB       | 51,287,627
+[Comments](https://archive.org/download/stackexchange/stackoverflow.com-Comments.7z)  | 6.51 GB     | 23.3 GB       | 90,380,323
+[PostLinks](https://archive.org/download/stackexchange/stackoverflow.com-PostLinks.7z)| 144 MB      | 768 MB        | 6,552,590
+[Posts](https://archive.org/download/stackexchange/stackoverflow.com-Posts.7z)        | 21.4 GB     | 96.7 GB       | 59,819,048
+[Tags](https://archive.org/download/stackexchange/stackoverflow.com-Tags.7z)          | 1 MB        | 5.56 MB       | 65,675
+[Users](https://archive.org/download/stackexchange/stackoverflow.com-Users.7z)        | 944 MB      | 5.38 GB       | 22,484,235
+[Votes](https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z)        | 2.05 GB     | 21.6 GB       | 238,974,011
 
 You can use one, two, or all.  
 
@@ -133,26 +133,34 @@ tap-stackoverflow-sampledata --help
 tap-stackoverflow-sampledata --config CONFIG --discover > ./catalog.json
 ```
 
+## Developer Resources
+
+Follow these instructions to contribute to this project.
+
 ### Initialize your Development Environment
 
+Prerequisites:
+
+- Python 3.9+
+- [uv](https://docs.astral.sh/uv/)
+
 ```bash
-pipx install poetry
-poetry install
+uv sync
 ```
 
 ### Create and Run Tests
 
-Create tests within the `tap_stackoverflow_sampledata/tests` subfolder and
-  then run:
+Create tests within the `tests` subfolder and
+then run:
 
 ```bash
-poetry run pytest
+uv run pytest
 ```
 
-You can also test the `tap-stackoverflow-sampledata` CLI interface directly using `poetry run`:
+You can also test the `tap-stackoverflow-sampledata` CLI interface directly using `uv run`:
 
 ```bash
-poetry run tap-stackoverflow-sampledata --help
+uv run tap-stackoverflow-sampledata --help
 ```
 
 ### Testing with [Meltano](https://www.meltano.com)
