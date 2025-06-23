@@ -6,7 +6,7 @@ Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
 
 ### Whats New 🛳️🎉
 **2024-08-01 Upgraded to Meltano Singer-SDK 0.46.4:**  
-Edger at Arch expanded the SDK to have a faster JSON encoder avaiable. I’ve updated tap-stackoverflow-sampledata to use the new MsgSpecReader class, which leverages the lightweight and speedy msgspec. Big Thank You 🙏 to Jim Crist-Harif for creating and maintaining msgspec and Edger for updating the SDK to utlize it! 
+Edger at Arch expanded the SDK to have a faster JSON encoder avaiable. I’ve updated tap-stackoverflow-sampledata to use the new MsgSpecWriter class, which leverages the lightweight and speedy msgspec. Big Thank You 🙏 to Jim Crist-Harif for creating and maintaining msgspec and Edger for updating the SDK to utlize it! 
 
 **2024-08-01 Upgraded to Meltano Singer-SDK 0.39.0**
 
