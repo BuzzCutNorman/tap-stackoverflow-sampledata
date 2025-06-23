@@ -1,16 +1,14 @@
 """Tests standard tap features using the built-in SDK tests library."""
 
-import datetime
 
 from singer_sdk.testing import get_tap_test_class
-
 from tap_stackoverflow_sampledata.tap import TapStackOverflowSampleData
 
 SAMPLE_CONFIG = {
-    "start_date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
-    # TODO: Initialize minimal tap config
+    "stackoverflow_data_directory" : "./tests/test_files/"
 }
 
+BLANK_CONFIG = {}
 
 # Run standard built-in tap tests from the SDK:
 TestTapStackOverflowSampleData = get_tap_test_class(
