@@ -5,6 +5,8 @@
 Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
 
 ### Whats New 🛳️🎉
+**2024-10-24 Upgraded to Meltano Singer-SDK 0.52.2:**  
+
 **2024-08-01 Upgraded to Meltano Singer-SDK 0.46.4:**  
 Edger at Arch expanded the SDK to have a faster JSON encoder avaiable. I’ve updated tap-stackoverflow-sampledata to use the new MsgSpecWriter class, which leverages the lightweight and speedy msgspec. Big Thank You 🙏 to Jim Crist-Harif for creating and maintaining msgspec and Edger for updating the SDK to utlize it! 
 
@@ -19,7 +21,7 @@ Edger at Arch expanded the SDK to have a faster JSON encoder avaiable. I’ve up
 You will need to install the tap directly from the GitHub repository.  Here is the command to use
 
 ```bash
-pipx install git+https://github.com/BuzzCutNorman/tap-stackoverflow-sampledata.git
+uv tool install git+https://github.com/BuzzCutNorman/tap-stackoverflow-sampledata.git
 ```
 
 ### Meltano CLI
@@ -142,7 +144,7 @@ Follow these instructions to contribute to this project.
 
 Prerequisites:
 
-- Python 3.9+
+- Python 3.10+
 - [uv](https://docs.astral.sh/uv/)
 
 ```bash
@@ -176,7 +178,7 @@ Next, install Meltano (if you haven't already) and any needed plugins:
 
 ```bash
 # Install meltano
-pipx install meltano
+uv tool install meltano
 # Initialize meltano within this directory
 cd tap-stackoverflow-sampledata
 meltano install
