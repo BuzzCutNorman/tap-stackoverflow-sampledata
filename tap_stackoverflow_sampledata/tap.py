@@ -26,9 +26,14 @@ from tap_stackoverflow_sampledata.streams import (
     VotesStream,
 )
 
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
+
 if TYPE_CHECKING:
     from singer_sdk import Stream
-    from singer_sdk._singerlib import Catalog
+    from singer_sdk.singerlib import Catalog
 
 # Used later to match Stream Class to files
 STACKOVERFLOW_FILE_NAMES_TO_STREAMS = {
@@ -160,6 +165,7 @@ class TapStackOverflowSampleData(Tap):
 
         return stream_types
 
+    @override
     def discover_streams(self) -> list[Stream]:
         """Return a list of discovered streams."""
         stream_types = self.get_streams()

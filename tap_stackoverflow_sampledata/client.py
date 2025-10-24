@@ -3,10 +3,16 @@
 from __future__ import annotations
 
 import os
+import sys
 import typing as t
 
 from lxml import etree
 from singer_sdk.streams import Stream
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
 
 if t.TYPE_CHECKING:
     from singer_sdk.helpers.types import Context
@@ -36,6 +42,7 @@ class StackOverflowSampleDataStream(Stream):
             self.get_data_file_path()
         return self._file_path
 
+    @override
     def get_records(
         self,
         context: Context | None,  # noqa: ARG002
