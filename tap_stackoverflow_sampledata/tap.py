@@ -153,14 +153,14 @@ class TapStackOverflowSampleData(Tap):
                     self.logger.error("There are no files in the directory")
                     sys.exit(1)
             else:
-                self.logger.error("The path given is not a direcotry")
+                self.logger.error("The path given is not a directory")
                 sys.exit(1)
         else:
             self.logger.error("The path doesn't exist")
             sys.exit(1)
 
         if not stream_types:
-            self.logger.error("No Stackovlerflow files found.")
+            self.logger.error("No StackOverflow files found.")
             sys.exit(1)
 
         return stream_types

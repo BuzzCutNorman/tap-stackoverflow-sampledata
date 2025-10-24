@@ -30,7 +30,7 @@ class StackOverflowSampleDataStream(Stream):
 
     @property
     def file_directory(self) -> str:
-        """Property that sets and gets the stackoverflow data directory forn config."""
+        """Property that sets and gets the stackoverflow data directory from config."""
         if self._file_directory is None:
             self._file_directory = self.config.get("stackoverflow_data_directory")
         return self._file_directory
@@ -56,7 +56,7 @@ class StackOverflowSampleDataStream(Stream):
         Yields:
             One dict per record.
         """
-        # Get the Stream Properties Dictornary from the Schema
+        # Get the Stream Properties Dictionary from the Schema
         properties: dict = self.schema.get("properties")
 
         # Blank list to hold all the Primary Key columns
@@ -128,7 +128,7 @@ class StackOverflowSampleDataStream(Stream):
             msg: str = f"File path does not exist {self.file_directory}"
             raise NonExistentDataDirectoryError(msg)
 
-        # Add the file Streams file_name to a direcotory path
+        # Add the file Streams file_name to a directory path
         # Pass along file_path if it points to the Stream's file_name
         clean_file_path = os.path.normpath(self.file_directory) + os.sep
         data_file_path: str = clean_file_path + self.file_name
